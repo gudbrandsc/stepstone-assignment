@@ -1,7 +1,7 @@
 // Select elements
 const clear = document.querySelector('.clear');
 const dateElement = document.getElementById('date');
-const todoCountElement = document.getElementById('numberOfTodo');
+const todoCountElement = document.getElementById('number-of-todo');
 const list = document.getElementById('list');
 const input = document.getElementById('input');
 const message = document.getElementById('empty-list-message');
@@ -12,6 +12,7 @@ const searchInput = document.getElementById('filter');
 const CHECK = 'fa-check-circle';
 const UNCHECK = 'fa-circle-thin';
 const LINETHROUGH = 'lineThrough';
+const TRASH = 'fa-trash-o';
 
 // Variables
 let LIST;
@@ -19,14 +20,14 @@ let id;
 let validTasks = 0;
 let undone = 0;
 
-const data = localStorage.getItem('TODO');
-
 // Date variables
 const options = {weekday: 'long', month: 'short', day: 'numeric'};
 const today = new Date();
 
 
-// Load data from loacal storage or declare variables
+// Load data from localStorage or declare variables
+const data = localStorage.getItem('TODO');
+
 if (data) {
   LIST = JSON.parse(data);
   id = LIST.length;
@@ -35,6 +36,7 @@ if (data) {
   LIST = [];
   id = 0;
 }
+
 updateTodoCountHtml();
 showEmptyListMessage();
 
@@ -62,8 +64,8 @@ localStorage.setItem('TODO', JSON.stringify(LIST));
 dateElement.innerHTML = today.toLocaleDateString('en-US', options);
 
 /**
-* Append todo item to html if its not deleted.
-* @param {string} toDo Todo description
+* Append task to html if it is not deleted.
+* @param {string} toDo Task description
 * @param {int} id Unique identefier for item
 * @param {boolean} done If task is completed or not
 * @param {boolean} trash If task is deleted
@@ -83,7 +85,7 @@ function addToDoHtml(toDo, id, done, trash) {
   const listNode = document.createElement('li');
   listNode.classList.add('item');
 
-  // Checkbox for marking as complete
+  // Checkbox for marking task as complete
   const checkBox = document.createElement('i');
   checkBox.classList.add('fa', DONE, 'co');
   checkBox.setAttribute('job', 'complete');
@@ -100,7 +102,7 @@ function addToDoHtml(toDo, id, done, trash) {
 
   // Delete button/icon
   const deleteNode = document.createElement('i');
-  deleteNode.classList.add('fa', 'fa-trash-o', 'de');
+  deleteNode.classList.add('fa', TRASH, 'de');
   deleteNode.setAttribute('job', 'delete');
   deleteNode.setAttribute('id', id);
 
@@ -114,7 +116,7 @@ function addToDoHtml(toDo, id, done, trash) {
 }
 
 /**
-* Mark a todo item as completed
+* Mark a task as completed
 * @param {HTMLelement} element Task that is marked as done
 */
 function completeToDo(element) {
@@ -127,8 +129,8 @@ function completeToDo(element) {
 }
 
 /**
-* Remove a todo item
-* @param {int} element Task to be deleted
+* Delete a task
+* @param {HTMLelement} element Task to be deleted
 */
 function removeToDo(element) {
   element.parentNode.parentNode.removeChild(element.parentNode);
@@ -138,9 +140,8 @@ function removeToDo(element) {
   showEmptyListMessage();
 }
 
-
 /**
-* Show message if there are no tasks to display
+* Show info message if there are no tasks to display
 */
 function showEmptyListMessage() {
   if (validTasks <= 0) {
@@ -152,9 +153,8 @@ function showEmptyListMessage() {
 }
 
 /**
-* Create new todo item and store it in localStorage
-* _TODO_ add error message if input is empty
-* @param {string} toDo sss
+* Create a task and store it in localStorage
+* @param {string} toDo Task description
 */
 function createTodoItem(toDo) {
   if (toDo) {
@@ -171,6 +171,7 @@ function createTodoItem(toDo) {
     input.value = '';
   } else {
     alert('Please fill out todo input');
+    input.select();
   }
 }
 
@@ -198,13 +199,13 @@ list.addEventListener('click', function() {
   } else if (elementJob == 'delete') {
     removeToDo(element);
   }
-  console.log(undone);
+
   updateTodoCountHtml();
   localStorage.setItem('TODO', JSON.stringify(LIST));
 });
 
 /*
-* TODO Change
+* Add new task on enter click.
 */
 document.addEventListener('keyup', function(even) {
   if (event.keyCode == 13) {
@@ -227,7 +228,6 @@ searchInput.addEventListener('input', function() {
 
   // Create filter string with lower case letters
   const filter = searchInput.value.toLowerCase();
-
 
   // Loop through all list items,
   // and hide those who don't match the search query

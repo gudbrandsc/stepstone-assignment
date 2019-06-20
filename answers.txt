@@ -47,7 +47,7 @@ if(!mysqli_stmt_prepare($stmt, $query)) {
 	mysqli_stmt_bind_param($stmt, 's', $name);
 	
 	if(mysqli_stmt_execute($stmt)) {
-		echo 'User added';
+		echo 'Success';
 	} else {
 		echo 'SQL error';
 	}
