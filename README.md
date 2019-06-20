@@ -39,7 +39,7 @@ $query = 'insert into friends (name) values ("' . $name . '")';
 mysqli_query($connection, $query);
 ```
 
-The main problem with this code snippet is that it is prone to SQL injection. This will allow an attacker to perform malicious actions in our database, and potentially retrieve or destroy data. Using the code snippet above, an attacker can input “ Tyler”); DROP TABLE friends; “ as their name, which will remove the entire friends table from our database. Attackers can also use select statements in their sql injections to retrieve data from other users, such as passwords and usernames.This can be prevented by using prepared statements. 
+The main problem with this code snippet is that it is prone to SQL injection. This will allow an attacker to perform malicious actions in our database, and potentially retrieve or destroy data. Using the code snippet above, an attacker can input ` Tyler”); DROP TABLE friends; ` as their name, which will remove the entire friends table from our database. Attackers can also use select statements in their sql injections to retrieve data from other users, such as passwords and usernames.This can be prevented by using prepared statements. 
 ```php
 $name = $_POST['name'];
 $query = 'insert into friends (name) values (?)'; 
