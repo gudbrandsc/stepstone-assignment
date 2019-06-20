@@ -34,9 +34,9 @@ if (data) {
 } else {
   LIST = [];
   id = 0;
-  showEmptyListMessage();
-  updateTodoCountHtml();
 }
+updateTodoCountHtml();
+showEmptyListMessage();
 
 /**
 * Update display for the number of undone tasks
@@ -74,7 +74,6 @@ function addToDoHtml(toDo, id, done, trash) {
   }
   validTasks++;
   undone = done ? undone : ++undone;
-
   updateTodoCountHtml();
 
   const DONE = done ? CHECK : UNCHECK;
@@ -135,6 +134,7 @@ function removeToDo(element) {
   element.parentNode.parentNode.removeChild(element.parentNode);
   LIST[element.attributes.id.value].trash = true;
   validTasks--;
+  undone = LIST[element.attributes.id.value].done ? undone : --undone;
   showEmptyListMessage();
 }
 
@@ -198,7 +198,8 @@ list.addEventListener('click', function() {
   } else if (elementJob == 'delete') {
     removeToDo(element);
   }
-
+  console.log(undone);
+  updateTodoCountHtml();
   localStorage.setItem('TODO', JSON.stringify(LIST));
 });
 

@@ -1,0 +1,58 @@
+1. Write a function to remove duplicate values from an array. (Assume all values of the array are simple, lowercase strings) 
+
+Java O(n) time complexity 
+public String[] removeDuplicates(String[] values){ 
+// Create HashSet from array 
+Set<String> filtered = 
+new HashSet<String>(Arrays.asList(values)); 
+
+// Convert HashSet back to array 
+return filtered.toArray( new String[filtered.size()] );
+}
+
+Python O(n) time complexity 
+def rem_dups(list):
+return list(set(list)) 	
+
+2. Why use server side filtering instead of client side filtering? 
+
+The main benefit of server side filtering is that it reduces the amount of data that must be sent back to the client, resulting in less traffic and faster transfers. Another benefit is that server side filtering will always operate on up-to-date data, while client caches must be updated when data changes. This logic may be highly complex depending on which correctness guarantees you want to provide. A final benefit of server side filtering is that it provides stronger security by not exposing the service layer to the client which makes it more difficult to manipulate data. 
+
+Client filtering is usually done for small amounts of data where one doesn't require the client to connect to the server, or rather the processing on the client side can be done faster than the time it will take to pass data between the two.
+
+
+
+3. What is jQuery and why would you choose to use it, or choose not to use it? 
+JQuery is a JavaScript library that provides an API for multiple common JavaScript tasks including HTML/DOM manipulation, event handling, animation, Ajax, and a variety of utility features. It also addresses cross-browser issues and typical bugs that one might experience while developing with older versions of JavaScript, which are no longer relevant  given that modern JavaScript browser support is far more consistent. Using jQuery allows the developer to speed up the development process. 
+
+On the other hand, there are some cases where using jQuery is not ideal. The newest version of  jQuery is over 200K uncompressed, and for some the size of the library is too much to justify the benefit. 
+Introducing dependencies always has its hang ups, and also require the developer team to potentially having to learn new technology which can slow down the development process.
+
+4. What's wrong with this snippet of code? 
+$name = $_POST['name'];
+$query = 'insert into friends (name) values ("' . $name . '")'; 
+mysqli_query($connection, $query);
+
+
+The main problem with this code snippet is that it is prone to SQL injection. This will allow an attacker to perform malicious actions in our database, and potentially retrieve or destroy data. Using the code snippet above, an attacker can input “ Tyler”); DROP TABLE friends; “ as their name, which will remove the entire friends table from our database. Attackers can also use select sql injections to retrieve data from other users, such as passwords and usernames.
+This can be prevented by using prepared statements. 
+
+$name = $_POST['name'];
+$query = 'insert into friends (name) values (?)'; 
+$stmt = mysqli_stmt_init($connection);
+
+if(!mysqli_stmt_prepare($stmt, $query)) {
+	echo 'SQL error';
+} else {
+	mysqli_stmt_bind_param($stmt, 's', $name);
+	
+	if(mysqli_stmt_execute($stmt)) {
+		echo 'User added';
+	} else {
+		echo 'SQL error';
+	}
+}
+
+
+
+
