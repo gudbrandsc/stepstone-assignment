@@ -14,6 +14,8 @@ const UNCHECK = 'fa-circle-thin';
 const LINETHROUGH = 'lineThrough';
 const TRASH = 'fa-trash-o';
 
+// Some text
+
 // Variables
 let LIST;
 let id;
